@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestionCircle, faBook, faUsers, faUserCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
+import { faBook, faUsers, faSignOutAlt, faVideo, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate, Link } from 'react-router-dom';
 import { auth, db } from './firebaseconfig'; // Ensure correct path to your Firebase config file
-import { signOut } from 'firebase/auth';
+import { signOut, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
+import './Navbar.css';
 
 function Navbar() {
   const [profilePhoto, setProfilePhoto] = useState(''); // State to store profile photo URL
+  const [loading, setLoading] = useState(true); // Loading state
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (auth.currentUser) {
+    const fetchUserProfile = async (user) => {
+      if (user) {
         try {
-          // Fetch user document from Firestore using uid
-          const userDoc = await getDoc(doc(db, 'users', auth.currentUser.uid));
+          const userDoc = await getDoc(doc(db, 'users', user.uid)); // Fetch user document from Firestore
           if (userDoc.exists()) {
             setProfilePhoto(userDoc.data().photoURL); // Set the profile photo URL from Firestore
           }
@@ -23,10 +24,20 @@ function Navbar() {
           console.error('Error fetching user profile:', error.message);
         }
       }
+      setLoading(false); // Stop loading after fetching
     };
 
-    fetchUserProfile();
-  }, [auth.currentUser]);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchUserProfile(user); // Fetch profile photo when user is authenticated
+      } else {
+        setProfilePhoto(''); // Clear profile photo if user is logged out
+        setLoading(false);
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup listener on component unmount
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -38,36 +49,25 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg custom-navbar">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">Doubmate</a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
+        <Link className="navbar-brand" to="/Mainpage/Question">Doubmate</Link>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                <FontAwesomeIcon icon={faQuestionCircle} /> Questions
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" to="/Mainpage/Notes">
                 <FontAwesomeIcon icon={faBook} /> Notes
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <Link className="nav-link" to="/Mainpage/studyGroup">
                 <FontAwesomeIcon icon={faUsers} /> Study Group
-              </a>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/Mainpage/conference">
+                <FontAwesomeIcon icon={faVideo} /> Conference
+              </Link>
             </li>
           </ul>
           <div className="dropdown">
@@ -78,7 +78,9 @@ function Navbar() {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              {profilePhoto ? (
+              {loading ? (
+                <span className="spinner-border spinner-border-sm"></span> // Show spinner while loading
+              ) : profilePhoto ? (
                 <img
                   src={profilePhoto} // Use the profile photo URL from Firestore
                   alt="Profile"

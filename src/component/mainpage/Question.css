@@ -1,0 +1,23 @@
+.floating-btn {
+    position: fixed;       /* Fixes the button to the screen */
+    bottom: 20px;          /* Distance from the bottom of the screen */
+    right: 20px;           /* Distance from the right of the screen */
+    background-color: #28a745;  /* Button color */
+    color: white;          /* Text color */
+    border: none;          /* Remove border */
+    border-radius: 50%;    /* Circular shape */
+    width: 60px;           /* Width of the button */
+    height: 60px;          /* Height of the button */
+    font-size: 30px;       /* Size of the "+" symbol */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    cursor: pointer;      /* Pointer cursor on hover */
+    z-index: 1000;         /* Make sure it's always on top */
+  }
+  
+  .floating-btn:hover {
+    background-color: #218838;  /* Darker green on hover */
+  }
+  

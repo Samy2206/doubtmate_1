@@ -1,0 +1,111 @@
+.container {
+    max-width: auto; /* Reduced max width */
+    margin: 0 auto;
+    background-color: white;
+    padding: 15px; /* Reduced padding */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px; /* Added margin-top for spacing below navbar */
+  }
+  h1 {
+    text-align: center;
+    font-size: 1.5rem; /* Smaller font size for the title */
+  }
+
+  .form-group label {
+    font-weight: bold;
+  }
+
+  .form-group select{
+    margin-left: 55px;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group button {
+    width: 100%;
+    padding: 8px; /* Reduced padding */
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px; /* Smaller font size */
+  }
+  .form-group textarea {
+    resize: vertical;
+    height: 180px;
+  }
+  /* .file-upload {
+    display: flex;
+    justify-content: space-between;
+  } */
+  .file-upload input {
+    width: 75%;
+  }
+  .file-upload button {
+    width: 20%;
+  }
+  .submit-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  .submit-btn:hover {
+    background-color: #218838;
+  }
+
+  .fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .fab:hover {
+    background-color: #0056b3;
+  }
+
+  .file-upload {
+    margin-bottom: 20px; /* Space between upload button and previews */
+  }
+  
+  .file-preview-item {
+    display: inline;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-right: 20px;
+  }
+  
+  .file-preview-image {
+    height: 200px; /* Fixed height */
+    width: 200px; /* Fixed width */
+    object-fit: cover; /* Ensures the image fits within the box without distortion */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .file-preview-link {
+    font-size: 14px;
+    color: #007bff;
+    text-decoration: none;
+    margin-top: 5px; /* Space between the image and the link */
+  }
+  
+  .file-preview-link:hover {
+    text-decoration: underline;
+  }
+  
+  
