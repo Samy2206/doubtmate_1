@@ -1,80 +1,198 @@
+/* Main container for the question details */
 .question-detail-container {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .question-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .timestamp {
-    font-size: 0.9rem;
-    color: gray;
-  }
-  
-  .question-content {
-    margin-top: 20px;
-  }
-  
-  .file-previews {
-    display: flex;
-    margin-top: 10px;
-  }
-  
-  .file-preview-image {
-    max-width: 100px;
-    margin-right: 10px;
-  }
-  
-  .question-user {
-    margin-top: 20px;
-    font-weight: bold;
-  }
-  
-  .comment-section {
-    margin-top: 40px;
-  }
-  
-  .comments-list {
-    margin-bottom: 20px;
-  }
-  
-  .comment-item {
-    margin-bottom: 15px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-  }
-  
-  .comment-user {
-    font-weight: bold;
-  }
-  
-  .comment-text {
-    margin-top: 5px;
-  }
-  
-  .comment-form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  .comment-form button {
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  .comment-form button:hover {
-    background-color: #45a049;
-  }
-  
+  width: 80%;
+  margin: 20px auto;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 2px solid black;
+}
+
+/* Header section with the question title and timestamp */
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  padding: 20px;
+  position: relative; /* Ensure that elements inside can be positioned absolutely */
+}
+
+.question-header h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-top: 20px; /* Adjust title position */
+  margin-left: 50px; /* Adjust space for username */
+}
+
+.timestamp {
+  font-size: 0.9rem;
+  color: #777;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+
+.question-content p {
+  width: 100%;
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+}
+
+.file-previews {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.file-preview-image {
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* User section displaying user info */
+.question-user {
+  margin-top: 10px;
+}
+
+.user-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  padding-bottom: 20px;
+}
+
+/* Comment section */
+.comment-section {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.comment-section h3 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.comments-list {
+  margin-bottom: 20px;
+}
+
+.comment-item {
+  background-color: #f1f1f1;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border-left: 5px solid #4CAF50;
+}
+
+.comment-user {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.comment-text {
+  font-size: 1rem;
+  color: #444;
+  margin-top: 5px;
+}
+
+.comment-form textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  min-height: 100px;
+  resize: vertical;
+}
+
+.comment-form button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.comment-form button:hover {
+  background-color: #45a049;
+}
+.question-detail-container {
+  padding: 20px;
+  max-width: 800px; /* Set the max width for the whole container */
+  margin: 0 auto; /* Center the container */
+  margin-bottom: 20px;
+}
+
+.question-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.question-title {
+  font-size: 1.5rem;
+  margin: 10px 0;
+}
+
+.question-content {
+  max-width: 100%; /* Ensure content width is restricted to parent width */
+  word-wrap: break-word; /* Prevent long words from overflowing */
+  overflow-wrap: break-word; /* Prevent words from breaking the layout */
+  word-break: break-word; /* Ensures text will break and not overflow */
+  white-space: normal; /* Allow text to wrap properly */
+}
+
+.file-previews {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.file-preview-image {
+  max-width: 100%;
+  height: auto;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.comment-section {
+  margin-top: 30px;
+}
+
+.comment-form textarea {
+  width: 100%;
+  max-width: 100%;
+  height: 100px;
+  padding: 10px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.comment-section button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

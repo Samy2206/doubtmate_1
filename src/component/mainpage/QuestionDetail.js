@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db, auth } from '../firebaseconfig';
-import { collection, query, where, getDocs, doc, getDoc, updateDoc ,addDoc} from 'firebase/firestore';
+import { doc, getDoc, collection, getDocs, addDoc, orderBy } from 'firebase/firestore';
 import './QuestionDetail.css';
 
 function QuestionDetail({ questionId }) {
@@ -12,33 +12,49 @@ function QuestionDetail({ questionId }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      // Fetch question data
-      const questionRef = doc(db, 'questions', questionId);
-      const questionSnap = await getDoc(questionRef);
+      try {
+        // Fetch question data
+        const questionRef = doc(db, 'questions', questionId);
+        const questionSnap = await getDoc(questionRef);
 
-      if (questionSnap.exists()) {
-        setQuestion(questionSnap.data());
-      } else {
-        console.log('No such question!');
+        if (questionSnap.exists()) {
+          setQuestion(questionSnap.data());
+        } else {
+          console.log('No such question!');
+          setLoading(false);
+          return;
+        }
+
+        // Fetch user data from 'users' collection using userId from the question
+        const userRef = doc(db, 'users', questionSnap.data().userId); // Querying 'users' collection
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+          setUser(userSnap.data()); // Set the full user data
+        }
+
+        // Fetch comments for this question (if any), sorted by timestamp (most recent first)
+        const commentsRef = collection(db, 'questions', questionId, 'comments');
+        const commentsSnap = await getDocs(commentsRef);
+        
+        const commentsData = await Promise.all(
+          commentsSnap.docs.map(async (doc) => {
+            const commentData = doc.data();
+            const commentUserRef = doc(db, 'users', commentData.userId); // Querying 'users' collection for comment users
+            const commentUserSnap = await getDoc(commentUserRef);
+            const userData = commentUserSnap.exists() ? commentUserSnap.data() : {};
+            return { ...commentData, user: userData };
+          })
+        );
+
+        // Sort the comments by timestamp, so the most recent is on top
+        const sortedComments = commentsData.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
+        setComments(sortedComments);
+      } catch (error) {
+        console.log('Error fetching data:', error);
+      } finally {
         setLoading(false);
-        return;
       }
-
-      // Fetch user data (from 'profile' collection) using userId from the question
-      const userRef = doc(db, 'profile', questionSnap.data().userId);
-      const userSnap = await getDoc(userRef);
-
-      if (userSnap.exists()) {
-        setUser(userSnap.data());
-      }
-
-      // Fetch comments for this question (if any)
-      const commentsRef = collection(db, 'questions', questionId, 'comments');
-      const commentsSnap = await getDocs(commentsRef);
-      const commentsData = commentsSnap.docs.map(doc => doc.data());
-      setComments(commentsData);
-
-      setLoading(false);
     };
 
     fetchData();
@@ -60,9 +76,9 @@ function QuestionDetail({ questionId }) {
 
     const commentsRef = collection(db, 'questions', questionId, 'comments');
     await addDoc(commentsRef, commentData);
-    
+
     setComment('');
-    setComments([...comments, commentData]);
+    setComments([commentData, ...comments]); // Adding the new comment at the top
   };
 
   if (loading) return <div>Loading...</div>;
@@ -70,9 +86,13 @@ function QuestionDetail({ questionId }) {
   return (
     <div className="question-detail-container">
       <div className="question-header">
-        <h2>{question.title}</h2>
+        <div className="user-name">
+          {/* Displaying the full name of the user */}
+          {user ? `${user.firstName} ${user.lastName}` : 'Unknown User'}
+        </div> {/* User on top left */}
+        <h2 className="question-title">{question.title}</h2> {/* Question title below username */}
         <div className="timestamp">
-          {new Date(question.timestamp.seconds * 1000).toLocaleString()}
+          {new Date(question.timestamp.seconds * 1000).toLocaleString()} {/* Correct timestamp */}
         </div>
       </div>
 
@@ -87,17 +107,14 @@ function QuestionDetail({ questionId }) {
         )}
       </div>
 
-      <div className="question-user">
-        <div className="user-name">{user ? user.name : 'Unknown User'}</div>
-      </div>
-
       <div className="comment-section">
         <h3>Comments</h3>
         <div className="comments-list">
           {comments.map((comment, index) => (
             <div key={index} className="comment-item">
               <div className="comment-user">
-                {user ? user.name : 'Anonymous'} - {new Date(comment.timestamp.seconds * 1000).toLocaleString()}
+                {comment.user ? `${comment.user.firstName} ${comment.user.lastName}` : 'Anonymous'} -{' '}
+                {new Date(comment.timestamp.seconds * 1000).toLocaleString()}
               </div>
               <div className="comment-text">{comment.comment}</div>
             </div>
