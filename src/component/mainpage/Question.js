@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebaseconfig'; // import Firestore config
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import QuestionDetail from './QuestionDetail';
 import './Question.css';
@@ -13,31 +13,28 @@ function Question() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        // Reference to the 'questions' collection
-        const questionsRef = collection(db, 'questions');
-        
-        // Query to fetch all documents and order by 'timestamp' in descending order
-        const q = query(questionsRef, orderBy('timestamp', 'desc'));
-        const querySnapshot = await getDocs(q);
-        
-        // Extracting the questions data
-        const questionsData = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        
-        // Setting the questions data in the state
-        setQuestions(questionsData);
-      } catch (error) {
-        console.log('Error fetching questions:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const questionsRef = collection(db, 'questions');
+    
+    // Query to fetch and order questions by timestamp in descending order
+    const q = query(questionsRef, orderBy('timestamp', 'desc'));
 
-    fetchQuestions();
+    // Real-time listener for changes to the questions collection
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const questionsData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      
+      setQuestions(questionsData);
+      setLoading(false); // Once data is fetched, stop loading
+    }, (error) => {
+      console.log('Error fetching questions:', error);
+      setLoading(false);
+    });
+
+    // Cleanup the listener when the component is unmounted
+    return () => unsubscribe();
+
   }, []);
 
   if (loading) return <div>Loading...</div>;
