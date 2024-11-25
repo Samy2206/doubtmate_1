@@ -196,3 +196,9 @@
   border-radius: 5px;
   cursor: pointer;
 }
+.teacher-answer {
+  background-color: #f9f7e8; /* Light yellow to highlight teacher's answers */
+  border-left: 4px solid #ffc107; /* Add a yellow border for emphasis */
+  padding: 8px;
+  margin-bottom: 8px;
+}

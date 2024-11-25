@@ -15,7 +15,7 @@ const Register = () => {
   const [birthday, setBirthday] = useState('');
   const [gender, setGender] = useState('Female');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('Student');
+  const [role, setrole] = useState('Student');
   const [profilePhoto, setProfilePhoto] = useState(null); // State for image
   const [loading, setLoading] = useState(false); // Loading state
   const [errorMessage, setErrorMessage] = useState(''); // Error message state
@@ -29,23 +29,23 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true); // Start loading
-
+  
     try {
       // Create user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
+  
       // Upload profile photo if selected
       let photoURL = '';
       if (profilePhoto) {
         const photoRef = ref(storage, `profile/${user.uid}`); // Path to store the image
         await uploadBytes(photoRef, profilePhoto); // Upload the image
         photoURL = await getDownloadURL(photoRef); // Get the public URL
-        console.log(photoURL)
+        console.log(photoURL);
       }
-
-      // Add user data to Firestore with uid as the document ID
-      await setDoc(doc(db, 'users', user.uid), {
+  
+      // Prepare common user data
+      const userData = {
         uid: user.uid,
         firstName,
         lastName,
@@ -53,11 +53,18 @@ const Register = () => {
         phoneNumber,
         birthday,
         gender,
-        userType,
+        role, // Save the role instead of role
         photoURL, // Save the image URL in Firestore
-      });
-
-      navigate('/');
+      };
+  
+      // Add user data to the users collection
+      await setDoc(doc(db, 'users', user.uid), userData);
+  
+      // Add user data to the appropriate collection based on role
+      const targetCollection = role === 'Student' ? 'students' : 'teachers';
+      await setDoc(doc(db, targetCollection, user.uid), userData);
+  
+      navigate('/'); // Navigate to home or desired page
     } catch (error) {
       console.error('Error creating user:', error.message);
       setErrorMessage(error.message); // Set the error message
@@ -65,6 +72,7 @@ const Register = () => {
       setLoading(false); // Stop loading
     }
   };
+  
 
   return (
     <section className="vh-100 gradient-custom">
@@ -186,8 +194,8 @@ const Register = () => {
                   <div className="mb-4">
                     <select
                       className="form-select"
-                      value={userType}
-                      onChange={(e) => setUserType(e.target.value)}
+                      value={role}
+                      onChange={(e) => setrole(e.target.value)}
                       required
                     >
                       <option value="" disabled>Select User Type</option>
