@@ -1,16 +1,18 @@
 /* Container for sidebar and main content */
 .question-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: row; /* Default to row on large screens */
 }
 
 /* Sidebar styles */
 .sidebar {
   width: 250px;
-  background-color: #f9f9f9;
-  padding: 20px;
+  background-color: #6ab3fc;
+
+  padding: 60px 20px 20px 20px;
   border-right: 1px solid #ddd;
-  min-height: 100vh; /* Ensure the sidebar stretches to full viewport height */
+  min-height: 100vh; /* Ensure sidebar stretches full height */
+  flex-shrink: 0; /* Prevent sidebar from shrinking */
 }
 
 .sidebar h3 {
@@ -37,53 +39,31 @@
 }
 
 .sidebar ul li.active {
-  background-color: #007bff;
-  color: #fff;
+  background-color: #f9f9f9;
+  color: #000000;
   font-weight: bold;
 }
 
 /* Main content styles */
 .main-content {
-  flex-grow: 1;
+  flex-grow: 1; /* Occupy the remaining space */
   padding: 20px;
-  background-color: #fff;
+  background-color: #89d4f1;
+  min-height: 100vh;
 }
 
-/* Floating button styles */
-.floating-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  z-index: 1000;
-  transition: background-color 0.3s ease-in-out;
-}
+/* Mobile responsiveness: Stack the sidebar and main content */
+@media (max-width: 768px) {
+  .question-container {
+    flex-direction: column; /* Stack sidebar and main content */
+  }
 
-.floating-btn:hover {
-  background-color: #0056b3;
-}
+  .sidebar {
+    width: 100%; /* Full width for sidebar on mobile */
+    border-bottom: 1px solid #ddd;
+  }
 
-/* Question list styles */
-h1 {
-  font-size: 1.8em;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #ddd;
-  padding-bottom: 10px;
-}
-
-p {
-  color: #666;
-  font-size: 1em;
-  margin-top: 10px;
+  .main-content {
+    width: 100%; /* Full width for the main content */
+  }
 }

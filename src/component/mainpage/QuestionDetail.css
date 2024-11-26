@@ -1,7 +1,8 @@
 /* Main container for the question details */
 .question-detail-container {
-  width: 80%;
-  margin: 20px auto;
+  width: 100%; /* Allow it to stretch full width */
+  max-width: 1200px; 
+  margin: 20px auto; /* Center the container */
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 8px;
@@ -9,40 +10,34 @@
   border: 2px solid black;
 }
 
-/* Header section with the question title and timestamp */
 .question-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #ddd;
   padding-bottom: 10px;
   margin-bottom: 20px;
-  padding: 20px;
-  position: relative; /* Ensure that elements inside can be positioned absolutely */
+  border-bottom: 1px solid #ddd;
 }
 
 .question-header h2 {
   font-size: 1.5rem;
   font-weight: bold;
   color: #333;
-  margin-top: 20px; /* Adjust title position */
-  margin-left: 50px; /* Adjust space for username */
 }
 
 .timestamp {
   font-size: 0.9rem;
   color: #777;
-  position: absolute;
-  top: 20px;
-  right: 20px;
 }
 
-
-.question-content p {
-  width: 100%;
+.question-content {
+  max-width: 100%; /* Restrict content to parent width */
   font-size: 1rem;
   color: #444;
   line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .file-previews {
@@ -59,73 +54,25 @@
   object-fit: cover;
 }
 
-/* User section displaying user info */
-.question-user {
-  margin-top: 10px;
-}
-
-.user-name {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #333;
-  position: absolute;
-  top: 10px;
-  left: 20px;
-  padding-bottom: 20px;
-}
-
-/* Comment section */
 .comment-section {
   margin-top: 40px;
   padding-top: 20px;
   border-top: 1px solid #ddd;
 }
 
-.comment-section h3 {
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.comments-list {
-  margin-bottom: 20px;
-}
-
-.comment-item {
-  background-color: #f1f1f1;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  border-left: 5px solid #4CAF50;
-}
-
-.comment-user {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #555;
-}
-
-.comment-text {
-  font-size: 1rem;
-  color: #444;
-  margin-top: 5px;
-}
-
 .comment-form textarea {
   width: 100%;
+  min-height: 100px;
+  resize: vertical;
   padding: 10px;
   font-size: 1rem;
   border-radius: 8px;
   border: 1px solid #ccc;
   margin-bottom: 10px;
-  min-height: 100px;
-  resize: vertical;
 }
 
 .comment-form button {
   padding: 10px 20px;
-  font-size: 1rem;
   background-color: #4CAF50;
   color: white;
   border: none;
@@ -137,68 +84,140 @@
 .comment-form button:hover {
   background-color: #45a049;
 }
-.question-detail-container {
-  padding: 20px;
-  max-width: 800px; /* Set the max width for the whole container */
-  margin: 0 auto; /* Center the container */
-  margin-bottom: 20px;
-}
 
-.question-header {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-}
-
-.question-title {
-  font-size: 1.5rem;
-  margin: 10px 0;
-}
-
-.question-content {
-  max-width: 100%; /* Ensure content width is restricted to parent width */
-  word-wrap: break-word; /* Prevent long words from overflowing */
-  overflow-wrap: break-word; /* Prevent words from breaking the layout */
-  word-break: break-word; /* Ensures text will break and not overflow */
-  white-space: normal; /* Allow text to wrap properly */
-}
-
-.file-previews {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.file-preview-image {
-  max-width: 100%;
-  height: auto;
-  margin: 10px;
-  border-radius: 5px;
-}
-
-.comment-section {
-  margin-top: 30px;
-}
-
-.comment-form textarea {
-  width: 100%;
-  max-width: 100%;
-  height: 100px;
-  padding: 10px;
-  box-sizing: border-box;
-  resize: vertical;
-}
-
-.comment-section button {
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
 .teacher-answer {
   background-color: #f9f7e8; /* Light yellow to highlight teacher's answers */
   border-left: 4px solid #ffc107; /* Add a yellow border for emphasis */
   padding: 8px;
   margin-bottom: 8px;
+}
+
+.answer-image img {
+  width: 150px;
+  height: 150px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  object-fit: cover;
+}
+.comment-item {
+  background-color: #fff; /* Default background color for student answers */
+  border-left: 4px solid #72c2ff; /* Default border for student answers */
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.teacher-answer {
+  background-color: #f9f7e8; /* Light yellow to highlight teacher's answers */
+  border-left: 4px solid #ffc107; /* Yellow border for teachers' answers */
+  padding: 8px;
+  margin-bottom: 8px;
+}
+.floating-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  z-index: 1000;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.floating-btn:hover {
+  background-color: #0056b3;
+}
+.delete-confirmation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.delete-confirmation-box {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.delete-confirmation-box h3 {
+  margin: 0 0 20px;
+  color: #333;
+}
+
+.delete-confirmation-box p {
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.delete-confirmation-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete-confirmation-buttons button {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-confirmation-buttons .confirm-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.delete-confirmation-buttons .confirm-btn:hover {
+  background-color: #c0392b;
+}
+
+.delete-confirmation-buttons .cancel-btn {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.delete-confirmation-buttons .cancel-btn:hover {
+  background-color: #7f8c8d;
+}
+
+/* Styling for the delete button */
+.delete-btn {
+  background-color: #e74c3c;
+  color: white;
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+.comment-item .delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }

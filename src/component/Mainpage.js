@@ -6,6 +6,7 @@ import Question from './mainpage/Question';
 import Conference from './mainpage/Conference'
 import StudyGroup from './mainpage/StudyGroup';
 import Que from './mainpage/Que'
+import './mainpage.css'
 
 function Mainpage() {
   return (
