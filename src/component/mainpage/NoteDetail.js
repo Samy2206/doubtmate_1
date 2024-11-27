@@ -24,6 +24,7 @@ function NoteDetail({ noteId }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleteCommentConfirm, setDeleteCommentConfirm] = useState(null);
+  const [deleteNoteConfirm, setDeleteNoteConfirm] = useState(false); // Track long press on note
   const [pressTimer, setPressTimer] = useState(null);
 
   useEffect(() => {
@@ -69,6 +70,7 @@ function NoteDetail({ noteId }) {
     fetchData();
   }, [noteId]);
 
+  // Long press for comment deletion
   const handleCommentLongPressStart = (commentId) => {
     setPressTimer(
       setTimeout(() => {
@@ -79,6 +81,31 @@ function NoteDetail({ noteId }) {
 
   const handleCommentLongPressEnd = () => {
     clearTimeout(pressTimer);
+  };
+
+  // Long press for note deletion
+  const handleNoteLongPressStart = () => {
+    setPressTimer(
+      setTimeout(() => {
+        setDeleteNoteConfirm(true); // Show delete confirmation
+      }, 1000)
+    );
+  };
+
+  const handleNoteLongPressEnd = () => {
+    clearTimeout(pressTimer);
+  };
+
+  const handleDeleteNote = async () => {
+    try {
+      const noteRef = doc(db, 'notes', noteId);
+      await deleteDoc(noteRef); // Delete the note document
+      alert('Note deleted successfully!');
+      // Optionally, navigate back to the list of notes or home page after deletion
+    } catch (error) {
+      console.log('Error deleting note:', error);
+      alert('Failed to delete note.');
+    }
   };
 
   const handleDeleteComment = async (commentId) => {
@@ -143,31 +170,36 @@ function NoteDetail({ noteId }) {
 
   const renderFilePreview = (fileUrl, fileType) => {
     const extensionMatch = fileUrl.split('?')[0].split('.').pop(); // Get the file extension before the query params
-    
+    const decodedUrl = decodeURIComponent(fileUrl.split('?')[0]); // Decode only the file path part
+  
     return (
       <div className="file-preview">
-        {['pdf', 'ppt', 'pptx', 'docx'].includes(extensionMatch) ? (
-          <embed src={fileUrl} type={`application/${extensionMatch}`} />
+        {['jpg', 'jpeg', 'png', 'gif'].includes(extensionMatch) ? (
+          <img src={fileUrl} alt="Attached Image" />
         ) : ['mp4', 'webm', 'ogg'].includes(extensionMatch) ? (
           <video controls>
             <source src={fileUrl} type={`video/${extensionMatch}`} />
             Your browser does not support the video tag.
           </video>
+        ) : ['pdf', 'ppt', 'pptx', 'docx'].includes(extensionMatch) ? (
+          <p>{decodedUrl.split('/').pop()}</p>
         ) : (
-          <p>{fileUrl.split('/').pop()}</p> // Show the file name for unsupported formats
+          <p>{decodedUrl.split('/').pop()}</p>
         )}
       </div>
     );
   };
-  
-  
-  
 
   if (loading) return <div>Loading...</div>;
 
   return (
     <div className="note-detail-container">
-      <div className="note-header">
+      <div
+        className="note-header"
+        onMouseDown={handleNoteLongPressStart}
+        onMouseUp={handleNoteLongPressEnd}
+        onMouseLeave={handleNoteLongPressEnd}
+      >
         <div className="user-name">
           {user ? `${user.firstName} ${user.lastName}` : 'Unknown User'}
         </div>
@@ -183,12 +215,20 @@ function NoteDetail({ noteId }) {
           <div className="file-previews">
             {note.fileUrls.map((url, index) => {
               const fileType = url.split('.').pop(); // Determine file type from URL extension
-              {console.log("File Type:"+fileType)}
               return renderFilePreview(url, fileType);
             })}
           </div>
         )}
       </div>
+
+      {/* Show delete confirmation if long press was detected */}
+      {deleteNoteConfirm && (
+        <div className="delete-confirmation">
+          <p>Are you sure you want to delete this note?</p>
+          <button onClick={handleDeleteNote}>Yes</button>
+          <button onClick={() => setDeleteNoteConfirm(false)}>No</button>
+        </div>
+      )}
 
       <div className="comment-section">
         <h3>Comments</h3>

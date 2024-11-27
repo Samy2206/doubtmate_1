@@ -12,7 +12,7 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import './QuestionDetail.css';
+import './QuestionDetail.css'
 
 const storage = getStorage();
 
@@ -197,7 +197,7 @@ function QuestionDetail({ questionId }) {
         {question.fileUrls && question.fileUrls.length > 0 && (
           <div className="file-previews">
             {question.fileUrls.map((url, index) => (
-              <img key={index} src={url} alt={`File ${index}`} className="file-preview-image" />
+              <img key={index} src={url} alt={`File ${index}`} className="file-preview-image-question" />
             ))}
           </div>
         )}

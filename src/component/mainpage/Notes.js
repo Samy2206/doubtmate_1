@@ -13,6 +13,7 @@ function Notes() {
   const [filteredNotes, setFilteredNotes] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');  // State for search query
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,14 +46,23 @@ function Notes() {
     return () => unsubscribe();
   }, []);
 
-  // Filter notes by subject
+  // Filter notes by subject and search query
   useEffect(() => {
-    if (selectedSubject === 'All') {
-      setFilteredNotes(notes);
-    } else {
-      setFilteredNotes(notes.filter((note) => note.subject === selectedSubject));
+    let filtered = notes;
+
+    if (selectedSubject !== 'All') {
+      filtered = filtered.filter((note) => note.subject === selectedSubject);
     }
-  }, [selectedSubject, notes]);
+
+    if (searchQuery) {
+      filtered = filtered.filter((note) =>
+        note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        note.description.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    setFilteredNotes(filtered);
+  }, [selectedSubject, notes, searchQuery]);
 
   if (loading) return <div>Loading...</div>;
 
@@ -77,6 +87,17 @@ function Notes() {
           <FontAwesomeIcon icon={faPlus} />
         </button>
         <h1>{selectedSubject === 'All' ? 'All Notes' : `${selectedSubject} Notes`}</h1>
+
+        {/* Search Bar */}
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Search by title or description"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+
         {filteredNotes.length === 0 ? (
           <p>No notes available</p>
         ) : (

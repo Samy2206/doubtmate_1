@@ -39,6 +39,9 @@
   overflow-wrap: break-word;
   white-space: normal;
 }
+.question-content p{
+  color: black;
+}
 
 .file-previews {
   display: flex;
@@ -46,9 +49,9 @@
   margin-top: 15px;
 }
 
-.file-preview-image {
-  width: 100px;
-  height: 100px;
+.file-preview-image-question {
+  width: 100%;
+  height: auto;
   margin-right: 10px;
   border-radius: 8px;
   object-fit: cover;
@@ -93,13 +96,14 @@
 }
 
 .answer-image img {
-  width: 150px;
-  height: 150px;
+  width: 50%; /* Ensure the image takes the full width of the container */
+  height: auto; /* Maintain the aspect ratio */
   margin-top: 10px;
   border-radius: 8px;
   border: 1px solid #ddd;
-  object-fit: cover;
+  object-fit: cover; /* This ensures the image is cropped or stretched to fit the container while preserving the aspect ratio */
 }
+
 .comment-item {
   background-color: #fff; /* Default background color for student answers */
   border-left: 4px solid #72c2ff; /* Default border for student answers */
