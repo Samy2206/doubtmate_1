@@ -11,25 +11,25 @@ import {
   Timestamp,
   deleteDoc,
 } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Firebase Storage
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import './QuestionDetail.css';
 
-const storage = getStorage(); // Initialize Firebase Storage
+const storage = getStorage();
 
 function QuestionDetail({ questionId }) {
   const [question, setQuestion] = useState(null);
   const [user, setUser] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [answer, setAnswer] = useState('');
-  const [selectedImage, setSelectedImage] = useState(null); // For selected image
+  const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [deleteQuestionConfirm, setDeleteQuestionConfirm] = useState(false); // Track question deletion
-  const [pressTimer, setPressTimer] = useState(null); // To track long press
+  const [deleteQuestionConfirm, setDeleteQuestionConfirm] = useState(false);
+  const [deleteAnswerConfirm, setDeleteAnswerConfirm] = useState(null); // Track which answer to delete
+  const [pressTimer, setPressTimer] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch question data
         const questionRef = doc(db, 'questions', questionId);
         const questionSnap = await getDoc(questionRef);
 
@@ -41,7 +41,6 @@ function QuestionDetail({ questionId }) {
           return;
         }
 
-        // Fetch user data for the question poster
         const userRef = doc(db, 'users', questionSnap.data().userId);
         const userSnap = await getDoc(userRef);
 
@@ -49,7 +48,6 @@ function QuestionDetail({ questionId }) {
           setUser(userSnap.data());
         }
 
-        // Real-time listener for answers
         const answersRef = collection(db, 'questions', questionId, 'answers');
         const q = query(answersRef, orderBy('timestamp', 'desc'));
         onSnapshot(q, (snapshot) => {
@@ -58,7 +56,6 @@ function QuestionDetail({ questionId }) {
             ...doc.data(),
           }));
 
-          // Sort answers: Teachers' answers on top, then by timestamp
           const sortedAnswers = answersData.sort((a, b) => {
             const isTeacherA = a.role === 'Teacher' ? 1 : 0;
             const isTeacherB = b.role === 'Teacher' ? 1 : 0;
@@ -82,25 +79,47 @@ function QuestionDetail({ questionId }) {
     if (auth.currentUser.uid === question.userId) {
       setPressTimer(
         setTimeout(() => {
-          setDeleteQuestionConfirm(true); // Show delete confirmation
-        }, 1000) // Long press duration: 1 second
+          setDeleteQuestionConfirm(true);
+        }, 1000)
       );
     }
   };
 
   const handleQuestionLongPressEnd = () => {
-    clearTimeout(pressTimer); // Clear the timer if the long press is interrupted
+    clearTimeout(pressTimer);
+  };
+
+  const handleAnswerLongPressStart = (answerId) => {
+    setPressTimer(
+      setTimeout(() => {
+        setDeleteAnswerConfirm(answerId);
+      }, 1000)
+    );
+  };
+
+  const handleAnswerLongPressEnd = () => {
+    clearTimeout(pressTimer);
   };
 
   const handleDeleteQuestion = async () => {
     try {
       await deleteDoc(doc(db, 'questions', question.id));
       alert('Question deleted successfully!');
-      setDeleteQuestionConfirm(false); // Reset confirmation state
-      // Optionally, redirect to another page or update UI
+      setDeleteQuestionConfirm(false);
     } catch (error) {
       console.log('Error deleting question:', error);
       alert('Failed to delete question.');
+    }
+  };
+
+  const handleDeleteAnswer = async (answerId) => {
+    try {
+      await deleteDoc(doc(db, 'questions', questionId, 'answers', answerId));
+      alert('Answer deleted successfully!');
+      setDeleteAnswerConfirm(null);
+    } catch (error) {
+      console.log('Error deleting answer:', error);
+      alert('Failed to delete answer.');
     }
   };
 
@@ -147,8 +166,8 @@ function QuestionDetail({ questionId }) {
       const answersRef = collection(db, 'questions', questionId, 'answers');
       await addDoc(answersRef, answerData);
 
-      setAnswer(''); // Clear input field
-      setSelectedImage(null); // Clear selected image
+      setAnswer('');
+      setSelectedImage(null);
     } catch (error) {
       console.log('Error posting answer:', error);
     }
@@ -196,10 +215,15 @@ function QuestionDetail({ questionId }) {
         <h3>Answers</h3>
         <div className="comments-list">
           {answers.map((answer) => (
-            <div key={answer.id} className={`comment-item ${answer.role === 'Teacher' ? 'teacher-answer' : ''}`}>
+            <div
+              key={answer.id}
+              className={`comment-item ${answer.role === 'Teacher' ? 'teacher-answer' : ''}`}
+              onMouseDown={() => handleAnswerLongPressStart(answer.id)}
+              onMouseUp={handleAnswerLongPressEnd}
+              onMouseLeave={handleAnswerLongPressEnd}
+            >
               <div className="comment-user">
-                {answer.userName} -{' '}
-                {new Date(answer.timestamp.seconds * 1000).toLocaleString()}
+                {answer.userName} - {new Date(answer.timestamp.seconds * 1000).toLocaleString()}
               </div>
               <div className="comment-text">{answer.answer}</div>
               {answer.imageUrl && (
@@ -210,6 +234,14 @@ function QuestionDetail({ questionId }) {
             </div>
           ))}
         </div>
+
+        {deleteAnswerConfirm && (
+          <div className="delete-confirmation">
+            <p>Are you sure you want to delete this answer?</p>
+            <button onClick={() => handleDeleteAnswer(deleteAnswerConfirm)}>Yes</button>
+            <button onClick={() => setDeleteAnswerConfirm(null)}>No</button>
+          </div>
+        )}
 
         <form onSubmit={handleAnswerSubmit} className="comment-form">
           <textarea

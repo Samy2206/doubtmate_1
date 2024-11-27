@@ -1,0 +1,63 @@
+.container {
+  width: 100%; /* Full width of the page */
+  padding: 20px;
+  box-sizing: border-box; /* Include padding in the element's total width */
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.file-upload input {
+  margin-top: 10px;
+}
+
+.file-previews {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.file-preview-item {
+  display: inline-block;
+  text-align: center;
+}
+
+.file-preview-image {
+  max-width: 100px;
+  height: auto;
+}
+
+.file-preview-video {
+  max-width: 200px;
+  height: auto;
+}
+
+.submit-btn {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
