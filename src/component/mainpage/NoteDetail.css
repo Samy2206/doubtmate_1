@@ -1,0 +1,251 @@
+/* Main container for the note details */
+.note-detail-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 2px solid black;
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.note-header h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.timestamp {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.note-content {
+  max-width: 100%;
+  font-size: 1rem;
+  color: black;
+  line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.file-previews {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.file-preview {
+  position: relative;
+  width: 200px; /* Fixed width for all file previews */
+  height: 200px; /* Fixed height for aspect ratio */
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.file-preview embed,
+.file-preview video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure content covers the area while maintaining aspect ratio */
+}
+
+.comment-section {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.comments-list {
+  margin-top: 20px;
+}
+
+.comment-item {
+  background-color: #fff;
+  border-left: 4px solid #72c2ff;
+  padding: 8px;
+  margin-bottom: 8px;
+  position: relative;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.comment-item .comment-user {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.comment-item .comment-text {
+  font-size: 1rem;
+  color: #333;
+}
+
+.comment-item img {
+  width: 150px;
+  height: 150px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  object-fit: cover;
+}
+
+.comment-form textarea {
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.comment-form input[type="file"] {
+  margin-top: 10px;
+}
+
+.comment-form button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.comment-form button:hover {
+  background-color: #45a049;
+}
+
+.floating-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  z-index: 1000;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.floating-btn:hover {
+  background-color: #0056b3;
+}
+
+.delete-confirmation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.delete-confirmation-box {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.delete-confirmation-box h3 {
+  margin: 0 0 20px;
+  color: #333;
+}
+
+.delete-confirmation-box p {
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.delete-confirmation-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete-confirmation-buttons button {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-confirmation-buttons .confirm-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.delete-confirmation-buttons .confirm-btn:hover {
+  background-color: #c0392b;
+}
+
+.delete-confirmation-buttons .cancel-btn {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.delete-confirmation-buttons .cancel-btn:hover {
+  background-color: #7f8c8d;
+}
+
+/* Styling for the delete button */
+.delete-btn {
+  background-color: #e74c3c;
+  color: white;
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+.comment-item .delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.note-content p {
+  color: black;
+}
