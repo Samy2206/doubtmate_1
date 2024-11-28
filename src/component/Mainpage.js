@@ -8,6 +8,7 @@ import StudyGroup from './mainpage/StudyGroup';
 import Que from './mainpage/Que'
 import './mainpage.css'
 import Note from './mainpage/Note';
+import SGroup from './mainpage/SGroup';
 
 function Mainpage() {
   return (
@@ -22,6 +23,7 @@ function Mainpage() {
           <Route path="conference" element={<Conference/>}/>
           <Route path="Que" element={<Que />} />
           <Route path="Note" element={<Note/>}/>
+          <Route path='SGroup' element={<SGroup/>}/>
         </Routes>
       </div>
     </>

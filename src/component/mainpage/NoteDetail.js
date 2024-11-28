@@ -171,24 +171,42 @@ function NoteDetail({ noteId }) {
   const renderFilePreview = (fileUrl, fileType) => {
     const extensionMatch = fileUrl.split('?')[0].split('.').pop(); // Get the file extension before the query params
     const decodedUrl = decodeURIComponent(fileUrl.split('?')[0]); // Decode only the file path part
-  
+    
+    // Get file name for download
+    const fileName = decodedUrl.split('/').pop();
+    
     return (
       <div className="file-preview">
         {['jpg', 'jpeg', 'png', 'gif'].includes(extensionMatch) ? (
-          <img src={fileUrl} alt="Attached Image" />
+          <div>
+            <img src={fileUrl} alt="Attached Image" />
+            <a href={fileUrl} target="_blank" rel="noopener noreferrer" className="open-btn">Open</a>
+          </div>
         ) : ['mp4', 'webm', 'ogg'].includes(extensionMatch) ? (
-          <video controls>
-            <source src={fileUrl} type={`video/${extensionMatch}`} />
-            Your browser does not support the video tag.
-          </video>
+          <div>
+            <video controls>
+              <source src={fileUrl} type={`video/${extensionMatch}`} />
+              Your browser does not support the video tag.
+            </video>
+            <a href={fileUrl} target="_blank" rel="noopener noreferrer" className="open-btn">Open</a>
+          </div>
         ) : ['pdf', 'ppt', 'pptx', 'docx'].includes(extensionMatch) ? (
-          <p>{decodedUrl.split('/').pop()}</p>
+          <div>
+            <p>{fileName}</p>
+            <a href={fileUrl} download={fileName} className="download-btn">Download</a>
+          </div>
         ) : (
-          <p>{decodedUrl.split('/').pop()}</p>
+          <div>
+            <p>{fileName}</p>
+            <a href={fileUrl} download={fileName} className="download-btn">Download</a>
+          </div>
         )}
       </div>
     );
   };
+  
+  
+  
 
   if (loading) return <div>Loading...</div>;
 

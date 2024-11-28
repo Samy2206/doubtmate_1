@@ -1,0 +1,99 @@
+/* SGroup.css */
+.sgroup-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure the modal appears on top */
+  
+}
+
+.modal-content {
+  background: aliceblue;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-family: 'Arial', sans-serif;
+  color: #555;
+}
+
+input[type="text"], 
+input[type="password"], 
+select {
+  padding: 10px;
+  margin-bottom: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: 'Arial', sans-serif;
+}
+
+input[type="text"]:focus, 
+input[type="password"]:focus, 
+select:focus {
+  border-color: #5a9dff;
+  outline: none;
+}
+
+button {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #4CAF50; /* Green color for submit button */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:disabled {
+  background-color: #ccc; /* Gray out button when submitting */
+  cursor: not-allowed;
+}
+
+button:hover {
+  background-color: #45a049; /* Darker green when hovered */
+}
+
+button:active {
+  background-color: #3e8e41; /* Even darker green when clicked */
+}
+
+@media (max-width: 600px) {
+  .modal-content {
+    width: 90%; /* Make modal smaller on mobile screens */
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  label, input, select {
+    font-size: 14px;
+  }
+}

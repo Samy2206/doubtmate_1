@@ -3,7 +3,7 @@ import { db } from '../firebaseconfig'; // Firestore config
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import NoteDetail from './NoteDetail'; // Component to render each note's details
-import './Notes.css'; // Add styles similar to Question.css
+import './Notes.css'; // Updated styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
@@ -68,34 +68,32 @@ function Notes() {
 
   return (
     <div className="notes-container">
-      <div className="sidebar">
-        <h3>Filter by Subject</h3>
-        <ul>
-          {subjects.map((subject) => (
-            <li
-              key={subject}
-              className={selectedSubject === subject ? 'active' : ''}
-              onClick={() => setSelectedSubject(subject)}
-            >
-              {subject}
-            </li>
-          ))}
-        </ul>
-      </div>
       <div className="main-content">
         <button className="floating-btn" onClick={() => navigate('/Mainpage/Note')}>
           <FontAwesomeIcon icon={faPlus} />
         </button>
         <h1>{selectedSubject === 'All' ? 'All Notes' : `${selectedSubject} Notes`}</h1>
 
-        {/* Search Bar */}
-        <div className="search-bar">
+        {/* Search and Filter Bar */}
+        <div className="search-filter-bar">
           <input
             type="text"
             placeholder="Search by title or description"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
           />
+          <select
+            value={selectedSubject}
+            onChange={(e) => setSelectedSubject(e.target.value)}
+            className="filter-dropdown"
+          >
+            {subjects.map((subject) => (
+              <option key={subject} value={subject}>
+                {subject}
+              </option>
+            ))}
+          </select>
         </div>
 
         {filteredNotes.length === 0 ? (

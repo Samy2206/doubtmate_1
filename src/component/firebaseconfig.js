@@ -1,9 +1,9 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore"; // Firestore import
-import { getStorage } from "firebase/storage"; // Firebase Storage import
+import { getFirestore, collection, addDoc, doc, getDoc } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+import { getDatabase, ref, set } from "firebase/database";  // Import ref and set for Realtime Database
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -24,6 +24,7 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app);  // Authentication
 const db = getFirestore(app);  // Firestore Database
 const storage = getStorage(app);  // Firebase Storage
+const realTimeDb = getDatabase(app);  // Firebase Realtime Database
 
 // Export the services for use in other parts of the app
-export { auth, db, storage };
+export { auth, db, storage, collection, addDoc, doc, getDoc, realTimeDb, ref, set };  // Export Realtime Database functions as well
