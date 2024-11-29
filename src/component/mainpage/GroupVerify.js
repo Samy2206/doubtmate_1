@@ -94,6 +94,7 @@ function GroupVerify() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter password"
               required
+              autoFocus
             />
             <button type="submit">Submit</button>
           </form>
