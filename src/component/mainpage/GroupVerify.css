@@ -1,0 +1,88 @@
+.group-chat-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+  position: relative; /* Allow absolute positioning of title */
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+}
+
+.profile-photo {
+  width: 40px; /* Small size */
+  height: 40px; /* Small size */
+  border-radius: 50%; /* Circular format */
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.username {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.timestamp {
+  text-align: right;
+  font-size: 14px;
+  color: #555;
+}
+
+.group-title-verify {
+  position: absolute; /* Position the title in the center */
+  left: 50%;
+  transform: translateX(-50%); /* Center it horizontally */
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+}
+
+.password-form {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.password-form input {
+  padding: 10px;
+  font-size: 16px;
+  margin-right: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.password-form button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.password-form button:hover {
+  background-color: #45a049;
+}
+
+.error-message {
+  color: red;
+  font-size: 18px;
+  text-align: center;
+}
+
+.profile-container p,
+.timestamp p {
+  color: black;
+}

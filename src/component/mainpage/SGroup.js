@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import './SGroup.css';
 import { useNavigate } from 'react-router-dom';
-import { db, collection, addDoc, doc, getDoc, auth } from '../firebaseconfig';  // Firebase Firestore import
+import { db, collection, addDoc, doc, getDoc, auth } from '../firebaseconfig'; // Firebase Firestore import
+import { getDatabase, ref, set } from 'firebase/database'; // Import Realtime Database functions
 
-function SGroup({user }) {
-  const navigate=useNavigate()
+function SGroup({ user }) {
+  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [topic, setTopic] = useState('');
   const [type, setType] = useState('public');
@@ -12,8 +13,10 @@ function SGroup({user }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [username, setUsername] = useState('');
   const [profileUrl, setProfileUrl] = useState('');
+  const [role, setRole] = useState(''); // State to store the user's role
 
   const userId = user ? user.uid : auth.currentUser.uid; // Get current user's UID
+  const dbRealtime = getDatabase(); // Get Realtime Database reference
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,11 +29,12 @@ function SGroup({user }) {
       // Fetch user details using userId from users collection
       const userRef = doc(db, 'users', userId);
       const userSnap = await getDoc(userRef);
-      
+
       if (userSnap.exists()) {
         const userData = userSnap.data();
         setUsername(userData.firstName + ' ' + userData.lastName); // Combine first and last name
         setProfileUrl(userData.photoURL); // Get profile picture URL
+        setRole(userData.role); // Get the user's role
 
         // Create a new study group document
         const timestamp = new Date().toISOString();
@@ -41,15 +45,23 @@ function SGroup({user }) {
           userId,
           username: userData.firstName + ' ' + userData.lastName,
           profileUrl: userData.photoURL,
+          role: userData.role, // Include the role in the study group
           timestamp,
           password: type === 'private' ? password : null,
         };
 
         // Add the new study group to the Firestore studyGroups collection
-        await addDoc(collection(db, 'studyGroups'), newStudyGroup);
+        const docRef = await addDoc(collection(db, 'studyGroups'), newStudyGroup);
 
-        alert('Study Group Created!');
-        navigate('/Mainpage/StugyGroup');
+        // After storing data in Firestore, create a new branch in Realtime Database
+        const realtimeDbRef = ref(dbRealtime, 'studyGroups/' + docRef.id); // Use the Firestore docID as the Realtime DB branch
+        await set(realtimeDbRef, {
+          title: title, // Store the title in Realtime Database
+        });
+
+        alert('Study Group Created! The unique ID is: ' + docRef.id); // Show the unique ID in the alert
+
+        navigate('/Mainpage/studyGroup');
       } else {
         alert('User not found!');
       }
@@ -62,8 +74,8 @@ function SGroup({user }) {
   };
 
   return (
-    <div className="sgroup-modal">
-      <div className="modal-content">
+    <div className="sgroup-container">
+      <div className="sgroup-content">
         <h2>Create Study Group</h2>
         <form onSubmit={handleSubmit}>
           <div>

@@ -4,6 +4,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore, collection, addDoc, doc, getDoc } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getDatabase, ref, set } from "firebase/database";  // Import ref and set for Realtime Database
+import { push } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -27,4 +28,4 @@ const storage = getStorage(app);  // Firebase Storage
 const realTimeDb = getDatabase(app);  // Firebase Realtime Database
 
 // Export the services for use in other parts of the app
-export { auth, db, storage, collection, addDoc, doc, getDoc, realTimeDb, ref, set };  // Export Realtime Database functions as well
+export { auth, db, storage, collection, addDoc, doc, getDoc, realTimeDb, ref, set ,getDatabase ,push};  // Export Realtime Database functions as well

@@ -1,0 +1,109 @@
+.group-chat {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full viewport height */
+    width: 100%;
+  }
+  
+  .messages-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+  }
+  
+  .message {
+    display: flex;
+    flex-direction: column; /* Ensure that message content is below profile */
+    margin-bottom: 10px;
+  }
+  
+  .message.left {
+    justify-content: flex-start;
+    align-items: flex-start; /* Align message content to the left */
+  }
+  
+  .message.right {
+    justify-content: flex-end;
+    align-items: flex-end; /* Align to the right */
+  }
+  
+  .message-content {
+    max-width: 60%;
+    text-align: left; /* Left-align content */
+  }
+  
+  .message-content p {
+    color: black;
+  }
+  
+  .message-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 5px;
+  }
+  
+  .message-user {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align profile and username to the left */
+    flex-direction: row; /* Ensure profile and username are in the same row */
+  }
+  
+  .message.right .message-user {
+    align-items: center; /* Keep the profile and username horizontally aligned */
+    justify-content: flex-end; /* Align to the right for the right message */
+  }
+  
+  .message.left .message-user {
+    flex-direction: row; /* Ensure profile and username are in the same row for left messages */
+    justify-content: flex-start; /* Align to the left for the left message */
+  }
+  
+  .user-profile {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+  
+  .chat-form {
+    display: inline;
+    padding: 10px;
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    z-index: 10;
+  }
+  
+  .chat-form input[type="text"] {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 70%;
+  }
+  
+  .chat-form input[type="file"] {
+    width: 20%;
+    padding: 5px;
+    margin-right: 10px;
+  }
+  
+  .chat-form button {
+    width: 5%;
+    padding: 10px 15px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .chat-form button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
