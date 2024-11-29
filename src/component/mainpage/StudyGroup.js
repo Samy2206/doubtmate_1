@@ -10,10 +10,11 @@ import './StudyGroup.css';
 function StudyGroup() {
   const navigate = useNavigate();
   const [groups, setGroups] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const q = query(collection(db, 'studyGroups'), orderBy('timestamp', 'desc'));
-    
+
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const groupData = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -26,17 +27,35 @@ function StudyGroup() {
     return () => unsubscribe();
   }, []);
 
+  // Filter groups based on the exact case-sensitive match of group ID
+  const filteredGroups = groups.filter((group) =>
+    group.id.includes(searchTerm)
+  );
+
   return (
     <div className="study-group-container">
-      <h1>Study Groups</h1>
+      {/* Search bar in the top-right corner */}
+      <div className="search-bar-container">
+        <input
+          type="text"
+          placeholder="Search by Group ID"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-bar"
+        />
+      </div>
+
+      {/* Floating button to create a new group */}
       <button
         className="floating-btn"
         onClick={() => navigate('/Mainpage/SGroup')}
       >
         <FontAwesomeIcon icon={faPlus} />
       </button>
+
+      {/* Cards container for displaying groups */}
       <div className="cards-container">
-        {groups.map((group) => (
+        {filteredGroups.map((group) => (
           <GroupCard key={group.id} group={group} />
         ))}
       </div>
