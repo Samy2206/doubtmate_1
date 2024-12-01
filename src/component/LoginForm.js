@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./LoginForm.css";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
     const navigate = useNavigate();
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
-    
+    const [error, setError] = React.useState("");
+
+    useEffect(() => {
+        const auth = getAuth();
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is already logged in, redirect to Mainpage
+                navigate('/Mainpage');
+            }
+        });
+        return () => unsubscribe(); // Clean up the observer when the component unmounts
+    }, [navigate]);
+
     const handleLogin = (e) => {
         e.preventDefault();
+        setError(""); // Clear any previous error
         const auth = getAuth();
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
@@ -19,16 +32,20 @@ const LoginForm = () => {
             })
             .catch((error) => {
                 const errorCode = error.code;
-                const errorMessage = error.message;
-                console.error(errorCode, errorMessage);
+                if (errorCode === "auth/wrong-password" || errorCode === "auth/user-not-found") {
+                    setError("Invalid email or password.");
+                } else {
+                    setError("Error logging in. Please try again.");
+                }
+                console.error(errorCode, error.message);
             });
     };
-    
+
     return (
         <div className="login-page">
             <div className="welcome-section">
                 <img 
-                    src="./logo192.png"
+                    src="./db_logo.png"
                     alt="DoubtMate Logo"
                     className="welcome-image"
                 />
@@ -37,6 +54,11 @@ const LoginForm = () => {
             <div className="login-container">
                 <div className="login-form p-4 rounded">
                     <h2 className="text-center mb-4">Login</h2>
+                    {error && (
+                        <div className="alert alert-danger" role="alert">
+                            {error}
+                        </div>
+                    )}
                     <form>
                         <div className="mb-3">
                             <label htmlFor="email" className="form-label">

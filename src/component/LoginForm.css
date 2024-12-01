@@ -3,6 +3,11 @@
     display: flex;
     height: 100vh;
     align-items: center;
+    background-image: url('/public/lg_bg.jpg'); /* Path to your image */
+    background-size: cover; /* Ensure the image covers the entire container */
+    background-position: center center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+
 }
 
 /* Styling for the welcome section */

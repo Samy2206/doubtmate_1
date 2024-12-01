@@ -163,3 +163,20 @@
 .download-btn:hover {
   background-color: #0056b3;
 }
+.voting {
+  display: flex; /* Aligns items in a row */
+  gap: 150px; /* Creates a 200px gap between the buttons */
+}
+
+.voting button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 24px; /* Adjust the size of the icons */
+  color: #333; /* Icon color */
+  transition: transform 0.3s ease; /* Optional: Smooth scaling effect */
+}
+
+.voting button:hover {
+  transform: scale(1.1); /* Optional: Scale up the buttons on hover */
+}

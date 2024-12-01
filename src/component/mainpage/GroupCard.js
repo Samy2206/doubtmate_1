@@ -5,6 +5,7 @@ import { faLock } from '@fortawesome/free-solid-svg-icons'; // Import lock icon
 import { useNavigate } from 'react-router-dom';
 import { getFirestore, doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import { getDatabase, ref, remove } from 'firebase/database';
 
 function GroupCard({ group }) {
   const navigate = useNavigate();
@@ -53,26 +54,33 @@ function GroupCard({ group }) {
 
     const isAllowedToDelete = await checkUserPermission();
     if (isAllowedToDelete) {
-      // Show confirmation alert
-      const confirmed = window.confirm("Are you sure you want to delete this group?");
-      if (confirmed) {
-        try {
-          const groupRef = doc(firestore, 'studyGroups', group.id);
-          await deleteDoc(groupRef);
-          alert('Group deleted successfully');
-          // Optionally, navigate away from the page after deletion
-          // navigate('/Mainpage');
-        } catch (error) {
-          console.error('Error deleting group:', error);
-          alert('Error deleting group');
+        // Show confirmation alert
+        const confirmed = window.confirm("Are you sure you want to delete this group?");
+        if (confirmed) {
+            try {
+                // Delete from Firestore
+                const groupRef = doc(firestore, 'studyGroups', group.id);
+                await deleteDoc(groupRef);
+
+                // Delete from Realtime Database
+                const db = getDatabase();
+                const groupDbRef = ref(db, `studyGroups/${group.id}`); // Path in Realtime Database
+                await remove(groupDbRef);
+
+                alert('Group and its associated data deleted successfully');
+                // Optionally, navigate away from the page after deletion
+                // navigate('/Mainpage');
+            } catch (error) {
+                console.error('Error deleting group:', error);
+                alert('Error deleting group');
+            }
         }
-      }
     } else {
-      alert('You do not have permission to delete this group.');
+        alert('You do not have permission to delete this group.');
     }
 
     setIsSubmitting(false);
-  };
+};
 
   return (
     <div

@@ -142,11 +142,12 @@ function Note() {
             required
           >
             <option value="">--Select a Subject--</option>
-            <option value="Math">Math</option>
-            <option value="Science">Science</option>
-            <option value="History">History</option>
-            <option value="English">English</option>
+            <option value="Python">Python</option>
+            <option value="Software Engineering">Software Engineering</option>
+            <option value="Data Structure">Data Structure</option>
+            <option value="DBMS">DBMS</option>
             <option value="Computer Science">Computer Science</option>
+            <option value="Other">Other</option>
           </select>
         </div>
 

@@ -13,7 +13,8 @@ import {
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import './NoteDetail.css';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faLongArrowAltUp , faLongArrowAltDown} from '@fortawesome/free-solid-svg-icons';
 const storage = getStorage();
 
 function NoteDetail({ noteId }) {
@@ -237,6 +238,7 @@ function NoteDetail({ noteId }) {
             })}
           </div>
         )}
+        
       </div>
 
       {/* Show delete confirmation if long press was detected */}
